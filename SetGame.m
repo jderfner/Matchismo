@@ -29,21 +29,22 @@
 #define MATCH_BONUS 4
 #define FLIP_COST 1
 -(void)flipCardAtIndex:(NSUInteger)index {
-    Card *card = [self cardAtIndex:index];
+    Card *pickedCard = [self cardAtIndex:index];
+    SetCard *card = (SetCard *)pickedCard;
+    NSLog(@"%@ %d %@",card.shape, card.number, card.fill);
     if (card && !card.unplayable) {
         if (!card.faceUp) {
             for (Card *otherCard in self.cards) {
-                if (otherCard.faceUp && !otherCard.unplayable) {
-                    NSLog(@"Other card is face up and playable.");
-                    if (self.cardsToCheckAgainst.count<=2) { //This protects against there being more than 2 cards in cardsToCheckAgainst.count (i.e., against it being a four-match game).
-                        NSLog(@"cards to check against:  %d",self.cardsToCheckAgainst.count);
+                if (otherCard.faceUp && !otherCard.unplayable && otherCard!=card) {
+                    if (self.cardsToCheckAgainst.count<=1) { //This protects against there being more than 2 cards in cardsToCheckAgainst.count (i.e., against it being a four-match game).
                         [self.cardsToCheckAgainst addObject:otherCard];
                     }
+                        NSLog(@"cards to check against:  %d",self.cardsToCheckAgainst.count);
                 }
             }
             if (self.cardsToCheckAgainst.count==2) {
                 int matchScore = [card match:self.cardsToCheckAgainst];
-                NSLog(@"%d",matchScore);
+                NSLog(@"score: %d",matchScore);
                 if (matchScore) {
                     card.unplayable=YES;
                     for (Card *c in self.cardsToCheckAgainst) {
@@ -63,6 +64,10 @@
     }
     card.faceUp=!card.faceUp;
     NSLog(@"score: %d",self.score);
+    if (self.cardsToCheckAgainst.count==2) {
+        self.cardsToCheckAgainst = nil; 
+        self.cardsToCheckAgainst = [[NSMutableArray alloc] initWithCapacity:2];
+    }
 }
 
 @end

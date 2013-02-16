@@ -21,4 +21,6 @@
 +(NSArray *)colors;
 +(NSArray *)nSNumbers;
 
+-(int)match:(NSArray *)otherCards;
+
 @end

@@ -92,8 +92,8 @@
         }
         [self.labelForScore setText:[NSString stringWithFormat:@"Score: %d",self.game.score]];
     }
-    NSString *label = [self displayLabel];
-    [self.messageToDisplay setText:label];
+    //NSString *label = [self displayLabel];
+    //[self.messageToDisplay setText:label];
     [self.sliderShowing setMinimumValue:0.0];
     [self.sliderShowing setMaximumValue: (self.previousSets.count>1)? self.previousSets.count:1];
 }
